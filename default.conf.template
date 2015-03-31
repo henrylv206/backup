@@ -1,0 +1,39 @@
+{
+    "local_backup_dir": "/tmp",
+    "emails": ["backup@your_company.com"],
+    "logfile": "/tmp/db_backup.log",
+
+    "remote_server": {
+        "host": "backup-server",
+        "path": "/backups"
+    },
+
+    "default": {
+        "period": 3600
+    },
+
+    "servers": [
+        {
+            "type": "mysql",
+            "host": "localhost",
+            "port": 3306,
+            "user": "YOUR_USER",
+            "password": "YOUR_PASSWORD",
+            "ignore_dbs": [
+                "information_schema",
+                "mysql"
+            ],
+            "db_settings": {
+                "statistic": {
+                    "period": 1200
+                }
+            }
+        },
+        {
+            "type": "mongo",
+            "host": "localhost",
+            "port": 27017,
+            "ignore_dbs": []
+        }
+    ]
+}
