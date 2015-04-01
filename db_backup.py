@@ -257,13 +257,16 @@ def send_report(report):
         message += "\n\n"
     print(message)
     try:
+        import socket
         from outbox import Outbox, Email, Attachment
+        hostname = socket.gethostname()
         smtp = namedtuple('smtp', settings.smtp.keys())(**settings.smtp)
         attachments = [Attachment('backup.log', fileobj=open(settings.logfile))]
         outbox = Outbox(username=smtp.user, password=smtp.password,
                 server=smtp.host, port=smtp.port, mode='SSL')
-        outbox.send(Email(subject='Daily backup report', body=message,
-            recipients=settings.emails), attachments=attachments)
+        message = "HOST: %s\n\n" % hostname + message
+        outbox.send(Email(subject='[%s] Daily backup report' % hostname,
+            body=message, recipients=settings.emails), attachments=attachments)
         # if report sent, we can remove log file
         os.unlink(settings.logfile)
     except Exception as e:
