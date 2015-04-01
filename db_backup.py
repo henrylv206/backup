@@ -251,7 +251,8 @@ def send_report(report):
             del(server_report["remote"])
             for db_name, db_report in server_report.items():
                 message += "\tDB %s: %s\n" % (db_name, db_report)
-            message += "\n\t[Remote server (scp)]: %s\n" % remote_report
+            if remote_report:
+                message += "\n\t[Remote server (scp)]: %s\n" % remote_report
         else:
             message += "%s" % server_report
         message += "\n\n"
