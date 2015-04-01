@@ -1,13 +1,14 @@
-# backup
+# Backup
 Script for backup mysql/mongodb
 
-Uses mysqldump, mongodump.
+Uses *mysqldump*, *mongodump*. After backing up copy files to remote server and send report email.
 
 
-You can use default.conf.template as template for creation config for your
+You can use **default.conf.template** as template for creation config for your
 server.
 
 
-Example of usage
-
+###Example of usage
+```
 $ ./backup.py server.conf
+```
