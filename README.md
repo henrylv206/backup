@@ -4,7 +4,7 @@ Script for backup mysql/mongodb
 Uses *mysqldump*, *mongodump*. After backing up copy files to remote server and send report email.
 
 
-You can use **default.conf.template** as template for creation config for your
+You can use **default.conf.template** as template to create config file for your
 server.
 
 
