@@ -11,6 +11,7 @@ import sys
 try:
     import pymongo
     import pymysql
+    import outbox
 except ImportError as e:
     print("Please install all required modules")
     print(__doc__)
@@ -30,7 +31,6 @@ import logging.config
 
 import pymysql, pymongo
 from pymysql import cursors
-import outbox
 
 try:
     filename = sys.argv[1]
@@ -117,7 +117,7 @@ def call_cmd(cmd):
         return err.decode('utf-8')
 
 
-# some magic here. function should be called <server.type>_all_dbs
+# some magic here. function should be named <server.type>_all_dbs
 def mysql_all_dbs(server):
     link = pymysql.connect(host=server.host, port=server.port,
         user=server.user, password=server.password)
@@ -132,7 +132,7 @@ def mysql_all_dbs(server):
     return [db['Database'] for db in all_dbs]
 
 
-# some magic here. function should be called <server.type>_all_dbs
+# some magic here. function should be named <server.type>_all_dbs
 def mongo_all_dbs(server):
     client = pymongo.MongoClient(server.host, server.port)
     dbs = client.database_names()
@@ -140,7 +140,7 @@ def mongo_all_dbs(server):
     return dbs
 
 
-# some magic here. function should be called <server.type>_backup
+# some magic here. function should be named <server.type>_backup
 def mysql_backup(server, backup_dir, db_name):
     filename = os.path.join(backup_dir, db_name)
     backup_cmd = "mysqldump --host=%(host)s --port=%(port)d -u%(user)s -p%(password)s %(db)s | bzip2 > %(filename)s.sql.bz2" % {
@@ -155,7 +155,7 @@ def mysql_backup(server, backup_dir, db_name):
     return "{0}.sql.bz2".format(filename)
 
 
-# some magic here. function should be called <server.type>_backup
+# some magic here. function should be named <server.type>_backup
 def mongo_backup(server, backup_dir, db_name):
     dir_name = os.path.join(backup_dir, db_name)
     backup_cmd = "mongodump --host=%(host)s --port=%(port)d --db=%(db)s --out=%(dir_name)s" % {
@@ -175,8 +175,9 @@ def mongo_backup(server, backup_dir, db_name):
 
 
 def get_backup_dir(server, basedir):
-    str_date = datetime.datetime.now().strftime("%d.%m.%Y")
-    str_time = datetime.datetime.now().strftime("%H:%M:%S")
+    dt = datetime.datetime.now()
+    str_date = dt.strftime("%d.%m.%Y")
+    str_time = dt.strftime("%H:%M:%S")
     return os.path.join(basedir, server.type,
         "{0}:{1}".format(server.host, server.port), str_date, str_time)
 
@@ -293,7 +294,6 @@ if __name__ == "__main__":
 
     logger.info('sending report...')
     send_report(report)
-    logger.info("I'm done")
 
 
 
