@@ -4,7 +4,7 @@
         "host": "SMTP_HOST",
         "port": "SMTP_PORT",
         "user": "SMTP_USER",
-        "password": "SMTP_PASSWORD",
+        "password": "SMTP_PASSWORD"
     },
     "emails": ["backup@your_company.com"],
     "logfile": "/tmp/db_backup.log",
