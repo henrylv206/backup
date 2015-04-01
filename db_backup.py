@@ -2,6 +2,7 @@
 
 '''
 Required modules:
+    * outbox (https://pypi.python.org/pypi/outbox)
     * pymongo (https://pypi.python.org/pypi/pymongo)
     * PyMySQL (https://pypi.python.org/pypi/PyMySQL)
 '''
