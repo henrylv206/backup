@@ -1,2 +1,3 @@
 # backup
-Script for backup mysql/mongodb (mysqldump, mongodump)
+Script for backup mysql/mongodb
+Uses mysqldump, mongodump.
