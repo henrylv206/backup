@@ -65,7 +65,7 @@ LOGGING = {
     "loggers": {
         "backup": {
             "handlers": ["file"],
-            "level": "INFO",
+            "level": "DEBUG",
             "propagate": False,
         }
     }
@@ -207,12 +207,23 @@ def copy_to_remote(server, remote_server):
     return call_cmd(scp_cmd)
 
 
+def ignore_db(db_name):
+    try:
+        if isinstance(server.ignore_dbs, list):
+            return db_name in server.ignore_dbs
+        dbs = json.load(open(server.ignore_dbs))
+        return db_name in dbs
+    except Exception as e:
+        logger.exception(e)
+    return false
+
+
 def backup_server(server):
     logger.info("Backup server %s" % get_server_key(server).upper())
     report = {}
     backup_dir = get_backup_dir(server, settings.local_backup_dir)
     for db in get_all_dbs(server):
-        if db in server.ignore_dbs:
+        if ignore_db(db):
             logger.debug("ignore db %s" % db)
             continue
         try:
